@@ -24,10 +24,21 @@ public class Basket : MonoBehaviour
 
     void  OnCollisionEnter(Collision coll){
         GameObject collidedWith = coll.gameObject;
+        Debug.Log("Collided with: " + collidedWith.name + " | Tag: " + collidedWith.tag);
         if(collidedWith.CompareTag("Apple")){
             Destroy(collidedWith);
             scoreCounter.score += 100;
             HighScore.TRY_SET_HIGH_SCORE(scoreCounter.score);
+        }
+        else if (collidedWith.CompareTag("Branch")) // If a branch is caught, trigger Game Over
+        {
+            Debug.Log("Branch caught!");
+            Destroy(collidedWith);
+            ApplePicker ap = FindAnyObjectByType<ApplePicker>(); // Find ApplePicker in scene
+            if (ap != null)
+            {
+                ap.GameOver(); // Call GameOver() in ApplePicker
+            }
         }
     }
 }

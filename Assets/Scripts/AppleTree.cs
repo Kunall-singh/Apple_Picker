@@ -6,6 +6,7 @@ public class AppleTree : MonoBehaviour
 {
     [Header("Inscribed")]
     public GameObject applePrefab;
+    public GameObject branchPrefab;
     public float speed = 1f;
     public float leftAndRightEdge = 10f;
     public float changeDirChance = 0.1f;
@@ -14,13 +15,25 @@ public class AppleTree : MonoBehaviour
     void Start()
     {
         //Dropping Apples
-        Invoke("DropApple", 2f);
+        Invoke("DropObject", 2f);
     }
 
-    void DropApple(){
-        GameObject apple = Instantiate<GameObject>(applePrefab);
-        apple.transform.position = transform.position;
-        Invoke("DropApple", appleDropDelay);
+    void DropObject(){
+        GameObject fallingObject;
+
+        if (Random.value < 0.20f)  // 15% chance to drop a branch
+        {
+            fallingObject = Instantiate(branchPrefab);
+            fallingObject.tag = "Branch"; // Ensure correct tag
+            Debug.Log("Branch spawned with tag: " + fallingObject.tag);
+        }
+        else
+        {
+            fallingObject = Instantiate(applePrefab);
+        }
+
+        fallingObject.transform.position = transform.position;
+        Invoke("DropObject", appleDropDelay);
     }
     void Update()
     {
